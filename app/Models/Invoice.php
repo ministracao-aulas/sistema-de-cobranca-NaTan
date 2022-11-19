@@ -27,4 +27,22 @@ class Invoice extends Model
     protected $casts = [
         'items' => AsCollection::class,
     ];
+
+    protected $appends = [
+        'paid',
+    ];
+
+    public function charge()
+    {
+        return $this->hasOne(Charge::class)->orderBy('id', 'desc')->whereIn('status', [
+            Charge::STATUS_OPENED,
+            Charge::STATUS_PAID,
+            Charge::STATUS_WAITING,
+        ]);
+    }
+
+    public function getPaidAttribute()
+    {
+        return $this->status == static::STATUS_PAID;
+    }
 }

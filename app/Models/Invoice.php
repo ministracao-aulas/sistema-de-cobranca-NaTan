@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Invoice extends Model
 {
@@ -32,17 +34,44 @@ class Invoice extends Model
         'paid',
     ];
 
-    public function charge()
+    /**
+     * Get the customer that owns the Invoice
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customer(): BelongsTo
     {
-        return $this->hasOne(Charge::class)->orderBy('id', 'desc')->whereIn('status', [
-            Charge::STATUS_OPENED,
-            Charge::STATUS_PAID,
-            Charge::STATUS_WAITING,
-        ]);
+        return $this->belongsTo(Customer::class);
     }
 
-    public function getPaidAttribute()
+    public function charge()
     {
-        return $this->status == static::STATUS_PAID;
+        return $this->hasOne(Charge::class)
+            ->orderBy('id', 'desc')
+            ->whereIn('status', [
+                Charge::STATUS_OPENED,
+                Charge::STATUS_PAID,
+                Charge::STATUS_WAITING,
+            ])
+            ->limit(1);
+    }
+
+    /**
+     * Get all of the charges for the Invoice
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function charges(): HasMany
+    {
+        return $this->hasMany(Charge::class);
+    }
+
+    public function getPaidAttribute(): null|bool
+    {
+        if (!$this->status) {
+            return null;
+        }
+
+        return $this->status == Invoice::STATUS_PAID;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Charge extends Model
 {
@@ -20,4 +21,23 @@ class Charge extends Model
         'amount',
         'status',
     ];
+
+    protected $appends = [
+        'paid',
+    ];
+
+    /**
+     * Get the invoice that owns the Charge
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
+    public function getPaidAttribute()
+    {
+        return $this->status == Charge::STATUS_PAID;
+    }
 }

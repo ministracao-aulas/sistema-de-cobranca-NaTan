@@ -1,0 +1,13 @@
+### My POST request description
+POST http://127.0.0.1:8000/api/invoices/
+Accept: application/json
+Content-Type: application/json
+
+{
+    "customer_id": 1,
+    "payment_method": "braz",
+    "charge_info": {
+        "description" : "Some here",
+        "amount": "100.85"
+    }
+}

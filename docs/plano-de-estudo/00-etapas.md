@@ -1,0 +1,13 @@
+
+- Criação da Fatura (Invoice) [OK]
+    - Emite um evento de fatura criada [Eventos]
+        - Envia e-mail para o Cliente (Customer) [works/jobs/filas]
+        - Notificamos via push nos aparelhos do cliente (Exemplo)
+    - O cliente entra no sistema e seleciona o método de pagamento
+        - Disparamos um evento de nova cobrança (Charge)
+        - Fazemos uma requisição criando a cobrança no GP (Gateway)
+            - Armazenamos o ID da cobrança gerado no GP e salvamos no Charge
+    - Quando o cliente pagar
+        - O sistema recebe uma notificação do GP no webhook
+        - Buscamos no GP o Status e atualizamos
+            - Charge, Invoice, Cliente, etc

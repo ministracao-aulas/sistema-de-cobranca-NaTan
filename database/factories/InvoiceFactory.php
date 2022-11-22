@@ -21,32 +21,42 @@ class InvoiceFactory extends Factory
         return [
             'customer_id' => Customer::factory(),
             'description' => \null,
-            'items' => [
-                [
-                    'name' => 'Item Abc',
-                    'price' => ($price = \rand(10, 100)) . '.00',
-                    'qty' => $qty = rand(1, 50),
-                    'amount' => $price * $qty,
-                ],
-                [
-                    'name' => 'Item Def',
-                    'price' => ($price = \rand(10, 100)) . '.00',
-                    'qty' => $qty = rand(1, 50),
-                    'amount' => $price * $qty,
-                ],
-                [
-                    'name' => 'Item Xyz',
-                    'price' => ($price = \rand(10, 100)) . '.00',
-                    'qty' => $qty = rand(1, 50),
-                    'amount' => $price * $qty,
-                ]
-            ],
+            'items' => InvoiceFactory::fakeItems(),
             'amount' => \rand(10, 100) . '.00',
             'status' => Arr::random([
                 1, 2, 3, 4, 5, 6,
                 1, 1, 1, 2, 2, 2,
                 1, 2, 3, 4, 5, 6,
             ]),
+        ];
+    }
+
+    /**
+     * function fakeItems
+     *
+     * @return array
+     */
+    public static function fakeItems(): array
+    {
+        return [
+            [
+                'name' => 'Item Abc',
+                'price' => ($price = \rand(10, 100)) . '.00',
+                'qty' => $qty = rand(1, 50),
+                'amount' => $price * $qty,
+            ],
+            [
+                'name' => 'Item Def',
+                'price' => ($price = \rand(10, 100)) . '.00',
+                'qty' => $qty = rand(1, 50),
+                'amount' => $price * $qty,
+            ],
+            [
+                'name' => 'Item Xyz',
+                'price' => ($price = \rand(10, 100)) . '.00',
+                'qty' => $qty = rand(1, 50),
+                'amount' => $price * $qty,
+            ]
         ];
     }
 }

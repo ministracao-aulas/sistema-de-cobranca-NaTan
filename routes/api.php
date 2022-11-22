@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\InvoiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', fn (Request $request) => $request->user());
+
+Route::prefix('invoices')->name('invoice.')->group(function () {
+    Route::get('/', [InvoiceController::class, 'index'])->name('index');
+    Route::post('/', [InvoiceController::class, 'store'])->name('store');
+});
